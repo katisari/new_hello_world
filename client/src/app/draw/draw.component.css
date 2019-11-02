@@ -1,0 +1,22 @@
+@import '~myscript/dist/myscript.min.css';
+
+#editor {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#chat_box {
+    height: 75vh;
+    border: 2px solid black;
+    overflow-y: auto;
+    white-space: wrap;
+}
+button{
+    color:  #f8f9fa
+}
+
+.border-thicc{
+    border: 2px solid black;
+    border-bottom: none;
+}

@@ -1,0 +1,23 @@
+<button (click)="startRecording()" class='col col-sm-6 py-3 m-0 border-thicc'>Start</button>
+<button (click)="stopRecording()" id='right' class='col col-sm-6 py-3 m-0 border-thicc'>Stop</button>
+<div id='chat_box' class='p-3'>
+
+
+  <!-- <div class='col text-center'>{{lang_setting | json }}</div> -->
+
+  <div id="main-container" class="container">
+    <div id="session">
+      <!-- <div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
+        <app-user-video [streamManager]="mainStreamManager"></app-user-video>
+      </div> -->
+      <div id="video-container" class="col-md-6">
+        <div *ngIf="publisher" class="stream-container col-md-6 col-xs-6">
+          <app-user-video [streamManager]="publisher" (clicked)="updateMainStreamManager(publisher)"></app-user-video>
+        </div>
+        <div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
+          <app-user-video [streamManager]="sub" (clicked)="updateMainStreamManager(sub)"></app-user-video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

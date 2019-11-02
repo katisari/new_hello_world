@@ -1,0 +1,33 @@
+#chat_box {
+    height: 75vh;
+    border: 2px solid black;
+    overflow-y: auto;
+    white-space: wrap;
+}
+
+#input_form {
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+p {
+    display: inline-block;
+}
+
+button{
+    color:  #f8f9fa
+}
+
+.border-thicc{
+    border: 2px solid black;
+    border-top: none;
+}
+
+.blue{
+    color: #48809c;
+}
+
+.bg-blue{
+    background: #48809c;
+    color:  #f8f9fa;
+}

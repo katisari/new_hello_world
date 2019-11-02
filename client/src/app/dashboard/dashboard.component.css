@@ -1,0 +1,22 @@
+button{
+    color:  #f8f9fa
+}
+#leave{
+    background: #cbdfe9;
+    color: #48809c;
+}
+.border-thicc{
+    border: 2px solid black;
+
+}
+#chat_box {
+    height: 61vh;
+    border: 2px solid black;
+    border-bottom: none;
+    overflow-y: auto;
+    white-space: wrap;
+}
+#select_lang{
+    background:  #f8f9fa;
+    border-bottom: none;
+}
