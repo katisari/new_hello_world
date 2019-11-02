@@ -31,6 +31,7 @@ export class HttpService {
     return this._http.delete(`/users/${id}/${sid}`);
   }
   getTranslation(input_words, source_lang, output_lang) {
-    return this._http.get(`https://translation.googleapis.com/language/translate/v2/?q=${input_words}&source=${source_lang}&target=${output_lang}&key=AIzaSyBelrl6Q_1scFMH6KBC5X0Pj2fjvb_mPdk`);
+    return this._http.get
+    (`https://translation.googleapis.com/language/translate/v2?target=${output_lang}&source=${source_lang}&key=${this.API_KEY}&q=${input_words}`);
   }
 }
