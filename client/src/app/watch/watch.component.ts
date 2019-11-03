@@ -142,7 +142,7 @@ export class WatchComponent implements OnInit {
     ['Latin', 'la']
 
   ];
-
+  current_session_id = '';
   constructor(
     private _httpService: HttpService,
     private _shareService: ShareService,
@@ -163,7 +163,15 @@ export class WatchComponent implements OnInit {
       }
     });
   }
-  ngOnInit() { }
+  ngOnInit() {
+    this._route.parent.params.subscribe((params: Params) => {
+      console.log(params);
+      this.current_session_id = params.id;
+      this._shareService.socket.on('receive_draw_video', () => {
+        this._dashboard.updateTextBox();
+      });
+    });
+  }
   yt_search() {
     console.log(this.id);
     this._shareService.setYT(this.id);
@@ -209,16 +217,31 @@ export class WatchComponent implements OnInit {
       input_words += word + '.';
     }
     console.log(input_words);
-    const observable = this._httpService.getTranslation(input_words, source_lang, this._dashboard.lang_setting.lang_to);
-    observable.subscribe(data => {
-      if (data['data']['translations'][0]['translatedText']) {
-        console.log(data['data']['translations'][0]['translatedText']);
-        this._dashboard.all_translations.push([data['data']['translations'][0]['translatedText'],
-        curr_time.toLocaleTimeString() + ' (video)']);
-      }
-      console.log('data is', data);
+
+
+    const observable = this._httpService.getSingleSession(this.current_session_id);
+    observable.subscribe((dataFromDB: any) => {
+      console.log('Got a single session. Result:', dataFromDB);
+      
+      const curr_time = new Date();
+      const observable3 = this._httpService.getTranslation(input_words, source_lang, this._dashboard.lang_setting.lang_to);
+      observable3.subscribe(data => {
+        const translatedText = dataFromDB.data.translated_content + data['data']['translations'][0]['translatedText'] + ", " +
+        curr_time.toLocaleTimeString() + ' (video - ' + this._shareService.my_user_name + ') <br>';
+
+        const observable2 = this._httpService.editSession(this.current_session_id, { translated_content: translatedText});
+        console.log("My translated text",translatedText);
+        observable2.subscribe((data2: any) => {
+          
+          console.log('Updated session. Result:', data2);
+          this._shareService.socket.emit('send_draw_video');
+          this.speech_content = []
+        });
+      });
     });
-    this.speech_content = [];
+
+
+
     return;
   }
 

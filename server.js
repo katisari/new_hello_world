@@ -55,5 +55,8 @@ io.on('connection', function(socket) {
     socket.on('send_text', function(){
         io.emit('receive_text');
     });
+    socket.on('send_draw_video', function(){
+        io.emit('receive_draw_video');
+    });
 
 });

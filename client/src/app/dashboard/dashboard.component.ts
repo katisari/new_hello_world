@@ -10,10 +10,10 @@ import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrie
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  all_translations = [];
   all_exports = '';
   socket: SocketIOClient.Socket;
   selected_session = '';
+  all_translations = "";
 
   lang_setting = {'lang_spoken': 'en-US', 'lang_to': 'ko'};
   lang_list = [['Afrikaans', 'af'],
@@ -179,6 +179,7 @@ export class DashboardComponent implements OnInit {
       this.selected_session = params.id;
       this._shareService.setSocket(this.socket);
       this.socket.emit('new_user', {id: this._shareService.my_user_id, sid: params.id});
+      this.updateTextBox();
       console.log(this._shareService.my_user_id);
       // this._shareService.socket.on('new_export_is_here', () => {
       //   this.all_exports = this._shareService.exported_texts;
@@ -191,20 +192,40 @@ export class DashboardComponent implements OnInit {
     this._router.navigate(['/']);
   }
 
-  download(filename, text) {
+  download(filename) {
     const dwld = confirm('Download the transcript?');
     if (dwld) {
-      const element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-      element.setAttribute('download', filename);
+        const splitted_all_translation = this.all_translations.split("<br>").toString();
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent("splitted_all_translation"));
+        element.setAttribute('download', filename);
 
-      element.style.display = 'none';
-      document.body.appendChild(element);
+        element.style.display = 'none';
+        document.body.appendChild(element);
 
-      element.click();
+        element.click();
 
-      document.body.removeChild(element);
+        document.body.removeChild(element);
+   
+    //   const observable = this._httpService.getSingleSession(this.current_session_id);
+    // observable.subscribe((dataFromDB: any) => {
+    //   console.log('Got a single session. Result:', dataFromDB);
+    //   const new_msg = dataFromDB.data.chat_content + '<div class="row mb-2"><div class="col col-sm-3 text-right blue"><i class="fas fa-user-circle"></i> ' +
+    //     this._shareService.my_user_name + ' </div><div class="col col-sm-7 px-4 py-2 bg-blue" style="border-radius:20px"> ' +
+    //       this.input_message + '</div></div>';
+
+
+
     }
+  }
+
+  updateTextBox() {
+    const observable = this._httpService.getSingleSession(this.selected_session);
+    observable.subscribe((data: any) => {
+      console.log('Got a single session. Result:', data);
+      document.getElementById('translated_box').innerHTML = data.data.translated_content;
+      this.all_translations = data.data.translated_content;
+    });
   }
 
 

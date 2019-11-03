@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HttpService {
   all_content = [];
+  API_KEY = "";
   constructor(private _http: HttpClient) {}
   // Session Services
   getSessions() {
